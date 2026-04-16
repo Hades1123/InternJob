@@ -5,7 +5,8 @@ interface ViteTypeOptions {
 }
 
 interface ImportMetaEnv {
-  readonly VITE_APP_TITLE: string;
+  readonly VITE_BACKEND_URL: string;
+  readonly VITE_COMPANY_ICON_URL: string;
   // more env variables...
 }
 
