@@ -1,0 +1,9 @@
+# Artifacts
+dist
+node_modules
+coverage
+
+# Thư mục build hoặc file hệ thống
+*.log
+package-lock.json
+yarn.lock
