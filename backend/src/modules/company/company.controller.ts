@@ -1,4 +1,4 @@
-import { Controller, Get, Param, HttpCode, HttpStatus, Query } from '@nestjs/common';
+import { Controller, Get, Param, HttpCode, HttpStatus, Query, Post, Body } from '@nestjs/common';
 import { CompanyService } from './company.service';
 import { Company } from './schema/company.schema';
 import { SearchCompanyDto } from './dto/search.dto';
@@ -46,5 +46,11 @@ export class CompanyController {
       page: result.page,
       pageSize: result.pageSize,
     };
+  }
+
+  @Post('checked')
+  async checkedCompany(@Body() body: { id: string; checked: boolean }) {
+    const { checked, id } = body;
+    return this.companyService.checkCompany(id, checked);
   }
 }

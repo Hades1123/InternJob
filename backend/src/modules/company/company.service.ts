@@ -164,12 +164,22 @@ export class CompanyService {
     const [data, total] = await Promise.all([
       this.companyModel
         .find(query)
-        .sort({ [options.sortBy ?? 'updatedAt']: options.sortOrder ?? -1 })
+        .sort({ [options.sortBy ?? 'createdAt']: options.sortOrder ?? -1 })
         .skip(skip)
         .limit(pageSize),
       this.companyModel.countDocuments(query),
     ]);
 
     return { data, total, page, pageSize };
+  }
+
+  async checkCompany(id: string, checked: boolean): Promise<Company | null> {
+    await this.companyModel.updateOne(
+      {
+        companyId: id,
+      },
+      { checked: checked },
+    );
+    return await this.companyModel.findOne({ companyId: id });
   }
 }

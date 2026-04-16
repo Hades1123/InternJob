@@ -18,6 +18,7 @@ interface ICompany {
   stat: IStat;
   updatedAt: Date;
   GeminiSumary: IGeminiSummary;
+  checked: boolean;
 }
 
 interface IGeminiSummary {

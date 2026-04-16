@@ -1,6 +1,7 @@
 import { useCompanies } from '@/hooks/query/companyQuery';
 import { Image, Table, Tag, Typography } from 'antd';
-import { Checkbox, type TableProps } from 'antd';
+import CheckBox from './checkBox';
+import { type TableProps } from 'antd';
 import { Link } from 'react-router';
 
 const presets = [
@@ -82,7 +83,7 @@ const columns: TableProps<ICompany & { checked: boolean }>['columns'] = [
     title: 'Checked',
     dataIndex: 'checked',
     key: 'checked',
-    render: () => <Checkbox />,
+    render: (_, record) => <CheckBox id={record.companyId} />,
   },
 ];
 
@@ -91,7 +92,6 @@ export const TableData = () => {
   return (
     <Table<ICompany & { checked: boolean }>
       columns={columns}
-      //@ts-expect-error
       dataSource={data?.data}
     />
   );

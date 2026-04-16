@@ -79,6 +79,9 @@ export class Company extends Document {
 
   @Prop({ type: [String], default: [] })
   allTechStacks: string[];
+
+  @Prop({ default: false })
+  checked: boolean;
 }
 
 export const CompanySchema = SchemaFactory.createForClass(Company);
