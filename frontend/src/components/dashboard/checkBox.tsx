@@ -1,15 +1,13 @@
 import { useCompanyMutation } from '@/hooks/mutation/companyMutation';
-import { useCompanyQuery } from '@/hooks/query/companyQuery';
 import { useFilters } from '@/hooks/useFilters';
 import { Checkbox } from 'antd';
 
-const CustomCheckBox = ({ id }: { id: string }) => {
-  const { handleCheckCompany } = useCompanyMutation();
+const CustomCheckBox = ({ id, checked }: { id: string; checked: boolean }) => {
   const { filters } = useFilters();
-  const { data } = useCompanyQuery(filters);
+  const { handleCheckCompany } = useCompanyMutation(filters);
   return (
     <Checkbox
-      checked={data?.data?.find((item) => item.companyId === id)?.checked}
+      checked={checked}
       onChange={(e) => {
         handleCheckCompany.mutate({ id, checked: e.target.checked });
       }}

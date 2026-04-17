@@ -4,14 +4,17 @@ import { RouterProvider } from 'react-router/dom';
 import '@/styles/global.css';
 import router from '@/routers/main.router';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { App } from 'antd';
 
 const queryClient = new QueryClient();
 
-const App = () => {
+const MyApp = () => {
   return (
     <>
       <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} />
+        <App>
+          <RouterProvider router={router} />
+        </App>
       </QueryClientProvider>
     </>
   );
@@ -19,6 +22,6 @@ const App = () => {
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <App />
+    <MyApp />
   </StrictMode>
 );

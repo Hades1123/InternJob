@@ -1,16 +1,20 @@
 import { checkCompany } from '@/api/company.api';
+import type { ICompanyParams } from '@/types/filter';
 import { useMutation } from '@tanstack/react-query';
-import { message } from 'antd';
+import useApp from 'antd/es/app/useApp';
 
-export const useCompanyMutation = () => {
+export const useCompanyMutation = (filters: ICompanyParams) => {
+  const { message } = useApp();
   const handleCheckCompany = useMutation({
     mutationFn: async (variables: { id: string; checked: boolean }) => {
       const result = await checkCompany(variables.id, variables.checked);
       return result.data;
     },
     onMutate: (variables, context) => {
+      context.client.cancelQueries({ queryKey: ['company', filters] });
       const previous = context.client.getQueryData<APIResponse<ICompany[]>>([
         'company',
+        filters,
       ]);
       if (previous) {
         const newData = previous.data?.map((item) =>
@@ -18,22 +22,30 @@ export const useCompanyMutation = () => {
             ? { ...item, checked: variables.checked }
             : item
         );
-        context.client.setQueryData<APIResponse<ICompany[]>>(['company'], {
-          ...previous,
-          data: newData,
-        });
+        context.client.setQueryData<APIResponse<ICompany[]>>(
+          ['company', filters],
+          {
+            ...previous,
+            data: newData,
+          }
+        );
       }
       return { previous };
     },
-    onError: (err, variables, onMutateResult, context) => {
+    onError: (err, _, onMutateResult, context) => {
       message.error({
         content: err.message,
       });
-      context.client.setQueryData(['company'], onMutateResult?.previous);
+      if (onMutateResult?.previous) {
+        context.client.setQueryData(
+          ['company', filters],
+          onMutateResult.previous
+        );
+      }
     },
     onSuccess: (_data, _variables, _onMutateResult, context) => {
-      message.success('Check thành công');
-      context.client.invalidateQueries({ queryKey: ['company'] });
+      message.success('Success');
+      context.client.invalidateQueries({ queryKey: ['company', filters] });
     },
   });
 

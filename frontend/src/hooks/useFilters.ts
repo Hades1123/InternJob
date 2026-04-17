@@ -6,6 +6,7 @@ export const useFilters = () => {
   const filters: ICompanyParams = {
     page: Number(searchParams.get('page')) || 1,
     pageSize: Number(searchParams.get('pageSize')) || 10,
+    techStacks: searchParams.get('techStacks') || undefined,
   };
 
   const setFilter = <K extends keyof ICompanyParams>(
@@ -15,6 +16,9 @@ export const useFilters = () => {
     setSearchParams((prev) => {
       const next = new URLSearchParams(prev);
       next.set(key, String(value));
+      if (key != 'page') {
+        next.delete('page');
+      }
       return next;
     });
   };

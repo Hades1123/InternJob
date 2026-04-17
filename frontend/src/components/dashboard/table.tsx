@@ -106,7 +106,9 @@ const columns: TableProps<ICompany & { checked: boolean }>['columns'] = [
     title: 'Checked',
     dataIndex: 'checked',
     key: 'checked',
-    render: (_, record) => <CheckBox id={record.companyId} />,
+    render: (_, record) => (
+      <CheckBox id={record.companyId} checked={record.checked} />
+    ),
   },
 ];
 

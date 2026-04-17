@@ -20,6 +20,7 @@ const contentStyle: React.CSSProperties = {
   minHeight: '100vh',
   lineHeight: '120px',
   color: 'black',
+  marginLeft: '15%',
 };
 
 const footerStyle: React.CSSProperties = {
@@ -44,7 +45,11 @@ export const MainLayout = () => {
       <Sider
         width="15%"
         collapsed={collapsed}
-        style={{ backgroundColor: 'white' }}
+        style={{
+          backgroundColor: 'white',
+          position: 'fixed',
+          minHeight: '100vh',
+        }}
       >
         <Button type="primary" onClick={toggleCollapsed} className="w-full">
           {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
