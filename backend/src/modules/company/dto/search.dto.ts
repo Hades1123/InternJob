@@ -37,4 +37,8 @@ export class SearchCompanyDto {
   @IsInt()
   @Min(1)
   pageSize?: number = 10;
+
+  @IsOptional()
+  @IsString()
+  checked: string;
 }

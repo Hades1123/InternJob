@@ -25,6 +25,7 @@ const contentStyle: React.CSSProperties = {
 const footerStyle: React.CSSProperties = {
   textAlign: 'center',
   color: 'black',
+  backgroundColor: 'white',
 };
 
 const layoutStyle = {

@@ -1,7 +1,10 @@
+import type { ICompanyParams } from '@/types/filter';
 import axios from './axios.customize';
 
-export const getAllCompanies = async () => {
-  const result = await axios.get<APIResponse<ICompany[]>>('/companies');
+export const getAllCompanies = async (filters: ICompanyParams) => {
+  const result = await axios.get<APIResponse<ICompany[]>>('/companies', {
+    params: filters,
+  });
   return result.data;
 };
 

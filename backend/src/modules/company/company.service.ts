@@ -136,6 +136,7 @@ export class CompanyService {
     techStacks?: string[];
     techMode?: 'any' | 'all';
     sortBy?: 'updatedAt' | 'createdAt';
+    checked?: string;
     sortOrder?: 1 | -1;
     page?: number;
     pageSize?: number;
@@ -155,6 +156,10 @@ export class CompanyService {
 
     if (options.techStacks) {
       query.allTechStacks = options.techMode === 'all' ? { $all: options.techStacks } : { $in: options.techStacks };
+    }
+
+    if (options.checked) {
+      query.checked = options.checked == 'true' ? { $eq: true } : { $eq: false };
     }
 
     const page = options.page || 1;

@@ -11,14 +11,17 @@ export const useCompanyMutation = () => {
     onMutate: (variables, context) => {
       const previous = context.client.getQueryData<APIResponse<ICompany[]>>([
         'company',
-      ])?.data;
+      ]);
       if (previous) {
-        const newData = previous.map((item) =>
+        const newData = previous.data?.map((item) =>
           item.companyId === variables.id
             ? { ...item, checked: variables.checked }
             : item
         );
-        context.client.setQueryData(['company'], newData);
+        context.client.setQueryData<APIResponse<ICompany[]>>(['company'], {
+          ...previous,
+          data: newData,
+        });
       }
       return { previous };
     },
