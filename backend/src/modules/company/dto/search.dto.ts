@@ -41,4 +41,8 @@ export class SearchCompanyDto {
   @IsOptional()
   @IsString()
   checked: string;
+
+  @IsOptional()
+  @IsString()
+  liked: string;
 }

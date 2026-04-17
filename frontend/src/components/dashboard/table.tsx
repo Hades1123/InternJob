@@ -4,6 +4,7 @@ import CheckBox from './checkBox';
 import { type TableProps } from 'antd';
 import { Link } from 'react-router';
 import { useFilters } from '@/hooks/useFilters';
+import { LikedComponent } from './liked';
 
 const presets = [
   'magenta',
@@ -19,11 +20,12 @@ const presets = [
   'purple',
 ];
 
-const columns: TableProps<ICompany & { checked: boolean }>['columns'] = [
+const columns: TableProps<ICompany>['columns'] = [
   {
     title: 'Logo',
     dataIndex: 'companyIcon',
     key: 'companyIcon',
+    width: 80,
     render: (value) => (
       <Image
         width={50}
@@ -47,6 +49,7 @@ const columns: TableProps<ICompany & { checked: boolean }>['columns'] = [
     title: 'Vị trí',
     dataIndex: 'GeminiSumary',
     key: 'GeminiSumary',
+    width: 250,
     render: (value: IGeminiSummary) => {
       const positions = value?.positions?.map((item) => item.title) ?? [];
       return positions.map((item, index) => {
@@ -103,23 +106,73 @@ const columns: TableProps<ICompany & { checked: boolean }>['columns'] = [
     },
   },
   {
-    title: 'Checked',
+    title: 'Đã xem',
     dataIndex: 'checked',
     key: 'checked',
+    width: 50,
     render: (_, record) => (
       <CheckBox id={record.companyId} checked={record.checked} />
+    ),
+    filters: [
+      { text: 'true', value: 'true' },
+      { text: 'false', value: 'false' },
+    ],
+  },
+  {
+    title: 'Like',
+    dataIndex: 'liked',
+    key: 'liked',
+    width: 50,
+    render: (value: boolean, record) => (
+      <LikedComponent id={record.companyId} liked={value} />
+    ),
+    filters: [
+      { text: 'true', value: 'true' },
+      { text: 'false', value: 'false' },
+    ],
+  },
+  {
+    title: 'Num',
+    dataIndex: 'stat',
+    key: 'stat',
+    width: 50,
+    render: (value: IStat) => (
+      <span>
+        {value.studentAccepted}/{value.maxAcceptedStudent}
+      </span>
     ),
   },
 ];
 
 export const TableData = () => {
   const { filters, setFilters } = useFilters();
-  const { data } = useCompanyQuery(filters);
+  const { data, isLoading } = useCompanyQuery(filters);
 
   return (
-    <Table<ICompany & { checked: boolean }>
+    <Table<ICompany>
+      loading={isLoading}
       columns={columns}
       dataSource={data?.data}
+      onChange={(pagination, filter, _sorter, _extra) => {
+        const likedFilter =
+          filter != null
+            ? filter['liked']?.length == 2
+              ? undefined
+              : (filter['liked']?.at(0) as string)
+            : undefined;
+        const checkedFilter =
+          filter != null
+            ? filter['checked']?.length == 2
+              ? undefined
+              : (filter['checked']?.at(0) as string)
+            : undefined;
+        setFilters({
+          liked: likedFilter,
+          checked: checkedFilter,
+          page: pagination.current,
+          pageSize: pagination.pageSize,
+        });
+      }}
       pagination={{
         current: data?.page,
         pageSize: data?.pageSize,
@@ -128,9 +181,6 @@ export const TableData = () => {
         defaultCurrent: 1,
         showTotal(total, range) {
           return `${range[0]} - ${range[1]} of ${total} items`;
-        },
-        onChange(page, pageSize) {
-          setFilters({ page, pageSize });
         },
       }}
     />

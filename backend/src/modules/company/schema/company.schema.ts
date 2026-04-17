@@ -82,6 +82,9 @@ export class Company extends Document {
 
   @Prop({ default: false })
   checked: boolean;
+
+  @Prop({ default: false })
+  liked: boolean;
 }
 
 export const CompanySchema = SchemaFactory.createForClass(Company);

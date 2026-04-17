@@ -15,3 +15,11 @@ export const checkCompany = async (id: string, checked: boolean) => {
   });
   return result.data;
 };
+
+export const likeCompany = async (id: string, liked: boolean) => {
+  const result = await axios.post<APIResponse<ICompany>>('/companies/liked', {
+    id,
+    liked,
+  });
+  return result.data;
+};

@@ -27,7 +27,7 @@ export class CompanyController {
 
   @Get()
   async getAllCompanies(@Query() query: SearchCompanyDto) {
-    const { address, name, techStacks, techMode, sortBy, sortOrder, page, pageSize, checked } = query;
+    const { address, name, techStacks, techMode, sortBy, sortOrder, page, pageSize, checked, liked } = query;
     const result = await this.companyService.searchCompanies({
       address,
       name,
@@ -38,6 +38,7 @@ export class CompanyController {
       page,
       pageSize,
       checked,
+      liked,
     });
 
     return {
@@ -53,5 +54,11 @@ export class CompanyController {
   async checkedCompany(@Body() body: { id: string; checked: boolean }) {
     const { checked, id } = body;
     return this.companyService.checkCompany(id, checked);
+  }
+
+  @Post('liked')
+  async likedCompany(@Body() body: { id: string; liked: boolean }) {
+    const { liked, id } = body;
+    return this.companyService.likeCompany(id, liked);
   }
 }

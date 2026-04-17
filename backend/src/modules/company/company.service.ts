@@ -73,9 +73,6 @@ export class CompanyService {
     }
   }
 
-  /**
-   * Tìm company theo companyId
-   */
   async findCompanyByID(companyId: string): Promise<APIResponse<any>> {
     const company = await this.companyModel.findOne({ companyId });
     if (!company) {
@@ -84,18 +81,12 @@ export class CompanyService {
     return { message: 'Success', success: true, data: company };
   }
 
-  /**
-   * Lấy danh sách công ty có file chưa được AI xử lý
-   */
   async getUnprocessedCompanies(): Promise<Company[]> {
     return this.companyModel.find({
       'files.isProcessed': false,
     });
   }
 
-  /**
-   * Lưu kết quả AI summary và đánh dấu tất cả file đã xử lý
-   */
   async saveGeminiSumary(
     companyId: string,
     summary: {
@@ -123,13 +114,6 @@ export class CompanyService {
     this.logger.log(`[AI] Saved summary for company ${companyId}`);
   }
 
-  /**
-   * Lấy tất cả company (cho Frontend)
-   */
-  async findAll(): Promise<Company[]> {
-    return this.companyModel.find().sort({ shortName: 1 });
-  }
-
   async searchCompanies(options: {
     name?: string;
     address?: string;
@@ -137,6 +121,7 @@ export class CompanyService {
     techMode?: 'any' | 'all';
     sortBy?: 'updatedAt' | 'createdAt';
     checked?: string;
+    liked?: string;
     sortOrder?: 1 | -1;
     page?: number;
     pageSize?: number;
@@ -162,6 +147,10 @@ export class CompanyService {
       query.checked = options.checked == 'true' ? { $eq: true } : { $eq: false };
     }
 
+    if (options.liked) {
+      query.liked = options.liked == 'true' ? { $eq: true } : { $eq: false };
+    }
+
     const page = options.page || 1;
     const pageSize = options.pageSize || 10;
     const skip = (page - 1) * pageSize;
@@ -184,6 +173,16 @@ export class CompanyService {
         companyId: id,
       },
       { checked: checked },
+    );
+    return await this.companyModel.findOne({ companyId: id });
+  }
+
+  async likeCompany(id: string, liked: boolean): Promise<Company | null> {
+    await this.companyModel.updateOne(
+      {
+        companyId: id,
+      },
+      { liked: liked },
     );
     return await this.companyModel.findOne({ companyId: id });
   }

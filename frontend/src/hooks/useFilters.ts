@@ -7,6 +7,8 @@ export const useFilters = () => {
     page: Number(searchParams.get('page')) || 1,
     pageSize: Number(searchParams.get('pageSize')) || 10,
     techStacks: searchParams.get('techStacks') || undefined,
+    checked: searchParams.get('checked') || undefined,
+    liked: searchParams.get('liked') || undefined,
   };
 
   const setFilter = <K extends keyof ICompanyParams>(
@@ -27,10 +29,22 @@ export const useFilters = () => {
     setSearchParams((prev) => {
       const next = new URLSearchParams(prev);
       Object.entries(params).map(([key, value]) => {
-        next.set(key, String(value));
+        // console.log('[useFilters]', { key, value });
+        if (value !== undefined) {
+          next.set(key, String(value));
+        } else {
+          next.delete(key);
+          console.log('delete', key);
+        }
       });
+      console.log(filters);
       return next;
     });
+  };
+
+  const resetFilters = () => {
+    setSearchParams(new URLSearchParams());
+    window.location.reload();
   };
 
   return {
@@ -39,5 +53,6 @@ export const useFilters = () => {
     setSearchParams,
     setFilter,
     setFilters,
+    resetFilters,
   };
 };

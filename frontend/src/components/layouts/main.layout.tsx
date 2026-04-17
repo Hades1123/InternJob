@@ -20,7 +20,7 @@ const contentStyle: React.CSSProperties = {
   minHeight: '100vh',
   lineHeight: '120px',
   color: 'black',
-  marginLeft: '15%',
+  // marginLeft: '15%',
 };
 
 const footerStyle: React.CSSProperties = {
@@ -35,7 +35,7 @@ const layoutStyle = {
 };
 
 export const MainLayout = () => {
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(true);
 
   const toggleCollapsed = () => {
     setCollapsed(!collapsed);
@@ -45,10 +45,11 @@ export const MainLayout = () => {
       <Sider
         width="15%"
         collapsed={collapsed}
+        defaultCollapsed
         style={{
           backgroundColor: 'white',
-          position: 'fixed',
-          minHeight: '100vh',
+          // position: 'fixed',
+          // minHeight: '100vh',
         }}
       >
         <Button type="primary" onClick={toggleCollapsed} className="w-full">

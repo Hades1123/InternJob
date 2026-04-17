@@ -22,6 +22,7 @@ interface ICompany {
   updatedAt: Date;
   GeminiSumary: IGeminiSummary;
   checked: boolean;
+  liked: boolean;
 }
 
 interface IGeminiSummary {
