@@ -2,7 +2,7 @@ import { Injectable, Logger, OnApplicationBootstrap } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
 import { CompanyService } from 'src/modules/company/company.service';
 import { CrawlerService } from 'src/modules/crawler/crawler.service';
-import { CRON_DAILY_6AM } from 'src/shared/constants/constant';
+import { CRON_EVERY_20_MINUTES } from 'src/shared/constants/constant';
 
 @Injectable()
 export class ScheduleService implements OnApplicationBootstrap {
@@ -19,9 +19,9 @@ export class ScheduleService implements OnApplicationBootstrap {
     await this.runFullPipeline();
   }
 
-  @Cron(CRON_DAILY_6AM)
-  async handleDailyCron() {
-    this.logger.log('Daily cron job triggered');
+  @Cron(CRON_EVERY_20_MINUTES)
+  async handleCron() {
+    this.logger.log('Cron job triggered (every 20 minutes)');
     await this.runFullPipeline();
   }
 

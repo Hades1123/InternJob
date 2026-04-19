@@ -26,7 +26,6 @@ A full-stack web application that uses **Google Gemini AI** to automatically ext
 | Vite                      | MongoDB + Mongoose  |
 | Ant Design + Tailwind CSS | Google Gemini AI    |
 | TanStack Query v5         | PDF/DOCX Processing |
-| Zustand                   | Scheduled Tasks     |
 
 ## Key Features
 
@@ -49,7 +48,9 @@ A full-stack web application that uses **Google Gemini AI** to automatically ext
 cd frontend && npm install && npm run dev
 
 # Backend
-cd backend && npm install && npm run start:dev
+cd backend && npm install
+docker compose up -d
+npm run start:dev
 ```
 
 ## Demo

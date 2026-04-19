@@ -2,8 +2,8 @@ export const DEFAULT_PORT = 8000;
 export const UNKNOWN = 'Unknown';
 export const DEFAULT_MODEL = 'gemini-2.5-flash-lite';
 
-// Cron expression: chạy lúc 6h sáng mỗi ngày
-export const CRON_DAILY_6AM = '0 6 * * *';
+// Cron expression: chạy mỗi 20 phút
+export const CRON_EVERY_20_MINUTES = '*/20 * * * *';
 
 export const PROMPT = `
 Bạn là chuyên gia phân tích dữ liệu tuyển dụng IT. 
@@ -22,13 +22,18 @@ DANH MỤC CHUẨN HÓA (CHỈ ĐƯỢC DÙNG CÁC TỪ KHÓA NÀY):
 - DevOps Engineer
 - Embedded Engineer
 - QA/QC Engineer
+- Game Developer
+- Business Analyst (BA)
+- Cyber Security Specialist
+- Blockchain Developer
 
 2. CÔNG NGHỆ (TECH STACK) - Chuyển mọi biến thể về tên chuẩn:
 - Web Frontend: React, Vue.js, Angular, Next.js, Nuxt.js, Tailwind CSS, Bootstrap, SCSS, Redux, Zustand, TanStack Query.
 - Web Backend: Node.js, NestJS, Express, Spring Boot, ASP.NET, Django, Flask, Prisma, FastAPI, Laravel.
-- Ngôn ngữ: JavaScript, TypeScript, Python, Java, C++, C#, Go, PHP, Rust, Ruby.
+- Ngôn ngữ: JavaScript, TypeScript, Python, Java, C++, C#, Go, PHP, Rust, Ruby, GDScript, Solidity.
 - Mobile: React Native, Flutter, Swift, Kotlin, Dart.
 - Testing: Jest, Vitest, Playwright, Cypress.
+- Game: Unity, Unreal Engine, Godot, GameMaker.
 - Database/Cloud: PostgreSQL, MySQL, MongoDB, Redis, Oracle, AWS, Azure, Docker, Kubernetes.
 - Công cụ: Git, Jira, Postman, Figma.
 ---
