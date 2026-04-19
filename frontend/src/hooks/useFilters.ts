@@ -7,6 +7,8 @@ export const useFilters = () => {
     page: Number(searchParams.get('page')) || 1,
     pageSize: Number(searchParams.get('pageSize')) || 10,
     techStacks: searchParams.get('techStacks') || undefined,
+    name: searchParams.get('name') || undefined,
+    position: searchParams.get('position') || undefined,
     checked: searchParams.get('checked') || undefined,
     liked: searchParams.get('liked') || undefined,
   };
@@ -29,15 +31,12 @@ export const useFilters = () => {
     setSearchParams((prev) => {
       const next = new URLSearchParams(prev);
       Object.entries(params).map(([key, value]) => {
-        // console.log('[useFilters]', { key, value });
-        if (value !== undefined) {
+        if (value !== undefined && value !== '' && value !== null) {
           next.set(key, String(value));
         } else {
           next.delete(key);
-          console.log('delete', key);
         }
       });
-      console.log(filters);
       return next;
     });
   };

@@ -7,8 +7,8 @@ interface GeminiSumary {
   positions: {
     title: string;
     techStack: string[];
-    requirements: string;
-    description: string;
+    // requirements: string;
+    // description: string;
   }[];
   generalNotes: string;
 }

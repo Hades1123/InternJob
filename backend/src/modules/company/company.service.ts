@@ -90,7 +90,7 @@ export class CompanyService {
   async saveGeminiSumary(
     companyId: string,
     summary: {
-      positions: { title: string; techStack: string[]; requirements: string; description: string }[];
+      positions: { title: string; techStack: string[] }[];
       generalNotes: string;
     },
   ): Promise<void> {
@@ -125,6 +125,7 @@ export class CompanyService {
     sortOrder?: 1 | -1;
     page?: number;
     pageSize?: number;
+    position?: string;
   }): Promise<{ data: Company[]; total: number; page: number; pageSize: number }> {
     const query: any = {};
 
@@ -139,8 +140,13 @@ export class CompanyService {
       query.address = { $regex: options.address, $options: 'i' };
     }
 
+    if (options.position) {
+      query['GeminiSumary.positions.title'] = { $regex: options.position, $options: 'i' };
+    }
+
     if (options.techStacks) {
-      query.allTechStacks = options.techMode === 'all' ? { $all: options.techStacks } : { $in: options.techStacks };
+      const lowerTechStacks = options.techStacks.map((t) => t.toLowerCase());
+      query.allTechStacks = options.techMode === 'all' ? { $all: lowerTechStacks } : { $in: lowerTechStacks };
     }
 
     if (options.checked) {

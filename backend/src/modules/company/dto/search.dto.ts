@@ -15,6 +15,10 @@ export class SearchCompanyDto {
   techStacks?: string;
 
   @IsOptional()
+  @IsString()
+  position?: string;
+
+  @IsOptional()
   @IsEnum(['any', 'all'])
   techMode?: 'any' | 'all' = 'any';
 

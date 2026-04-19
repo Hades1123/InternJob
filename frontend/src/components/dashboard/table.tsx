@@ -71,7 +71,7 @@ const columns: TableProps<ICompany>['columns'] = [
               color={presets[index % presets.length]}
               variant="filled"
             >
-              {tech}
+              {tech[0].toUpperCase() + tech.substring(1)}
             </Tag>
           ))}
         </div>
@@ -142,6 +142,12 @@ const columns: TableProps<ICompany>['columns'] = [
       </span>
     ),
   },
+  {
+    title: 'Hạn nộp',
+    dataIndex: 'GeminiSumary',
+    key: 'Deadline',
+    render: (value: IGeminiSummary) => <span>{value.generalNotes}</span>,
+  },
 ];
 
 export const TableData = () => {
@@ -179,6 +185,7 @@ export const TableData = () => {
         total: data?.total,
         defaultPageSize: 10,
         defaultCurrent: 1,
+        pageSizeOptions: [5, 10, 20, 50, 100],
         showTotal(total, range) {
           return `${range[0]} - ${range[1]} of ${total} items`;
         },
