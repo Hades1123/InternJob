@@ -61,7 +61,7 @@ const columns: TableProps<ICompany>['columns'] = [
     title: 'Công nghệ',
     dataIndex: 'allTechStacks',
     key: 'allTechStacks',
-    width: 500,
+    width: 300,
     render: (value: string[]) => {
       return (
         <div className="flex flex-wrap gap-4">
@@ -89,10 +89,10 @@ const columns: TableProps<ICompany>['columns'] = [
     title: 'Files',
     dataIndex: 'files',
     key: 'files',
-    width: 200,
+    width: 100,
     render: (value: IFile[]) => {
       return value.map((item) => (
-        <div className="line-clamp-1">
+        <div className="line-clamp-1 max-w-32">
           <Link
             key={item.name}
             to={`${import.meta.env.VITE_COMPANY_ICON_URL}/${item.path}`}
@@ -146,7 +146,9 @@ const columns: TableProps<ICompany>['columns'] = [
     title: 'Hạn nộp',
     dataIndex: 'GeminiSumary',
     key: 'Deadline',
-    render: (value: IGeminiSummary) => <span>{value.generalNotes}</span>,
+    render: (value: IGeminiSummary) => (
+      <span>{value?.generalNotes ?? 'None'}</span>
+    ),
   },
 ];
 
@@ -156,9 +158,12 @@ export const TableData = () => {
 
   return (
     <Table<ICompany>
+      rowKey={'companyId'}
       loading={isLoading}
       columns={columns}
       dataSource={data?.data}
+      tableLayout="fixed"
+      scroll={{ x: 'max-content' }}
       onChange={(pagination, filter, _sorter, _extra) => {
         const likedFilter =
           filter != null

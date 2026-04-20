@@ -34,7 +34,7 @@ interface IGeminiSummary {
       description: string;
     },
   ];
-  generalNotes: string;
+  generalNotes?: string;
   updatedAt: Date;
   _id: string;
 }
