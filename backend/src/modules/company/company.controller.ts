@@ -2,10 +2,22 @@ import { Controller, Get, Param, HttpCode, HttpStatus, Query, Post, Body } from 
 import { CompanyService } from './company.service';
 import { Company } from './schema/company.schema';
 import { SearchCompanyDto } from './dto/search.dto';
+import { APIResponse } from 'src/shared/types/common';
 
 @Controller('companies')
 export class CompanyController {
   constructor(private readonly companyService: CompanyService) {}
+
+  @Get('all')
+  @HttpCode(HttpStatus.OK)
+  async getAll(): Promise<APIResponse<Company[]>> {
+    const result = await this.companyService.findAllCompanies();
+    return {
+      message: 'success',
+      success: true,
+      data: result,
+    };
+  }
 
   @Get(':companyId')
   @HttpCode(HttpStatus.OK)

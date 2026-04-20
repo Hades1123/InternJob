@@ -1,14 +1,14 @@
 import { createPartFromUri, GoogleGenAI, Part } from '@google/genai';
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { DEFAULT_MODEL, PROMPT, UNKNOWN } from 'src/shared/constants/constant';
+import environmentConfig from 'src/config/env.config';
 import * as mammoth from 'mammoth';
+import { type ConfigType } from '@nestjs/config';
 
 interface GeminiSumary {
   positions: {
     title: string;
     techStack: string[];
-    // requirements: string;
-    // description: string;
   }[];
   generalNotes: string;
 }
@@ -17,7 +17,10 @@ interface GeminiSumary {
 export class CrawlerService {
   private readonly logger = new Logger(CrawlerService.name);
 
-  constructor(@Inject('GEMINI_AI') private readonly ai: GoogleGenAI) {}
+  constructor(
+    @Inject('GEMINI_AI') private readonly ai: GoogleGenAI,
+    @Inject(environmentConfig.KEY) private envConfig: ConfigType<typeof environmentConfig>,
+  ) {}
 
   /**
    * Upload file PDF lên Gemini File API và đợi xử lý xong
@@ -106,7 +109,7 @@ export class CrawlerService {
     });
 
     const result = await this.generateContentWithRetry({
-      model: process.env.GEMINI_MODEL ?? DEFAULT_MODEL,
+      model: this.envConfig.geminiModel ?? DEFAULT_MODEL,
       contents: content,
     });
 
@@ -140,19 +143,19 @@ export class CrawlerService {
       return { positions: [], generalNotes: 'Không trích xuất được nội dung từ file DOCX' };
     }
 
-    const aiResponse = await this.generateContentWithRetry({
-      model: process.env.GEMINI_MODEL ?? DEFAULT_MODEL,
+    const geminiResponse = await this.generateContentWithRetry({
+      model: this.envConfig.geminiModel ?? DEFAULT_MODEL,
       contents: `${PROMPT}\n\nNội dung tài liệu:\n${validTexts}`,
     });
 
-    return this.parseAiResponse(aiResponse.text);
+    return this.parseAiResponse(geminiResponse.text);
   }
 
   /**
    * Pipeline chính: xử lý tất cả file của 1 công ty (ưu tiên PDF, fallback DOCX)
    */
   async processCompanyFiles(files: { name: string; path: string; fileType: string }[]): Promise<GeminiSumary> {
-    const baseUrl = process.env.BASE_URL ?? '';
+    const baseUrl = this.envConfig.baseUrl;
 
     const pdfFiles = files.filter((f) => f.fileType === 'pdf').map((f) => baseUrl.concat(f.path));
 

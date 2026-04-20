@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { APIResponse } from 'src/shared/types/common';
@@ -6,21 +6,26 @@ import { Company } from './schema/company.schema';
 import axios from 'axios';
 import { JobAPIRes } from 'src/shared/types/company';
 import { UNKNOWN } from 'src/shared/constants/constant';
+import environmentConfig from 'src/config/env.config';
+import type { ConfigType } from '@nestjs/config';
 
 @Injectable()
 export class CompanyService {
-  constructor(@InjectModel(Company.name) private companyModel: Model<Company>) {}
+  constructor(
+    @InjectModel(Company.name) private companyModel: Model<Company>,
+    @Inject(environmentConfig.KEY) private envConfig: ConfigType<typeof environmentConfig>,
+  ) {}
   private readonly logger = new Logger(CompanyService.name);
 
   async syncCompaniesFromApi(): Promise<APIResponse<any>> {
     try {
       this.logger.log('Fetching companies from API...');
-      const response = await axios.get(process.env.COMPANY_URL ?? '');
+      const response = await axios.get(this.envConfig.companyUrl);
       const companies = response.data.items;
       let syncedCount = 0;
 
       for (const item of companies) {
-        const currentJobDetailResponse = await axios.get<JobAPIRes>(process.env.JOB_URL?.concat(item._id) ?? '');
+        const currentJobDetailResponse = await axios.get<JobAPIRes>(this.envConfig.jobUrl.concat(item._id));
         const currentJobDetail = currentJobDetailResponse.data;
 
         const formatInternFile = currentJobDetail.item.internshipFiles.map((e) => ({
@@ -68,7 +73,7 @@ export class CompanyService {
       this.logger.log(`[Crawler] Successfully synced ${syncedCount} companies to Database.`);
       return { message: '[Crawler] Success', success: true };
     } catch (error) {
-      this.logger.error(`[Crawler] Sync failed: ${error.message}`);
+      this.logger.error(`[Crawler] Sync failed: ${error}`);
       throw error;
     }
   }
@@ -191,5 +196,9 @@ export class CompanyService {
       { liked: liked },
     );
     return await this.companyModel.findOne({ companyId: id });
+  }
+
+  async findAllCompanies(): Promise<Company[]> {
+    return await this.companyModel.find({});
   }
 }

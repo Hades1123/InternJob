@@ -8,12 +8,6 @@ class JobPosition {
 
   @Prop([String])
   techStack: string[];
-
-  // @Prop()
-  // requirements: string;
-
-  // @Prop()
-  // description: string;
 }
 
 @Schema({ _id: false })

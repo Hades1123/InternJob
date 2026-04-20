@@ -43,10 +43,10 @@ export class SearchCompanyDto {
   pageSize?: number = 10;
 
   @IsOptional()
-  @IsString()
+  @IsEnum(['true', 'false'])
   checked: string;
 
   @IsOptional()
-  @IsString()
+  @IsEnum(['true', 'false'])
   liked: string;
 }
