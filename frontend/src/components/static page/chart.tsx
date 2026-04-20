@@ -2,6 +2,7 @@ import Chart from 'react-apexcharts';
 import type { ApexOptions } from 'apexcharts';
 import { useCompanyQueryAll } from '@/hooks/query/companyQuery';
 import { useMemo } from 'react';
+import { useNavigate } from 'react-router';
 
 interface IProps {
   chartName: string;
@@ -32,6 +33,7 @@ interface IProps {
 export const StaticChart = (props: IProps) => {
   const { data: companyList, isError, isLoading } = useCompanyQueryAll();
   const { chartName, labelName, handleData, techs } = props;
+  const navigate = useNavigate();
 
   const chartData = useMemo(() => {
     if (!companyList) return { series: [], categories: [] };
@@ -51,14 +53,29 @@ export const StaticChart = (props: IProps) => {
   }
 
   const options: ApexOptions = {
+    chart: {
+      events: {
+        click: (_event, _chart, options) => {
+          if (options?.dataPointIndex) {
+            navigate(
+              `/?techStacks=${encodeURIComponent(options.labelData.labels[options.dataPointIndex])}`
+            );
+          }
+        },
+      },
+    },
     colors: [],
     plotOptions: {
       bar: {
+        distributed: true, // mỗi column có màu khác nhau
         horizontal: false,
         columnWidth: '55%',
         borderRadius: 5,
         borderRadiusApplication: 'end',
       },
+    },
+    legend: {
+      show: false, // hide legend khi dùng distributed
     },
     dataLabels: {
       enabled: false,
@@ -95,7 +112,7 @@ export const StaticChart = (props: IProps) => {
           {chartName}
         </h4>
       </div>
-      <div>
+      <div className="[&_.apexcharts-bar-series_path]:cursor-pointer">
         <Chart
           options={options}
           series={chartData.series}

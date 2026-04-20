@@ -5,6 +5,7 @@ import { type TableProps } from 'antd';
 import { Link } from 'react-router';
 import { useFilters } from '@/hooks/useFilters';
 import { LikedComponent } from './liked';
+import { useEffect } from 'react';
 
 const presets = [
   'magenta',
@@ -155,6 +156,10 @@ const columns: TableProps<ICompany>['columns'] = [
 export const TableData = () => {
   const { filters, setFilters } = useFilters();
   const { data, isLoading } = useCompanyQuery(filters);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [filters]);
 
   return (
     <Table<ICompany>

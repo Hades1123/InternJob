@@ -5,6 +5,7 @@ import {
   DB_CLOUD,
   FRONTEND,
   MOBILE,
+  OTHERS,
   PROGRAMING_LANGUAGE,
 } from '@/constants/techStacks';
 import { handleTechStack } from '@/utils/helper';
@@ -48,6 +49,13 @@ export const StaticPage = () => {
           handleData={handleTechStack}
           labelName="Jobs"
           techs={DB_CLOUD}
+        />
+
+        <StaticChart
+          chartName="Others"
+          handleData={handleTechStack}
+          labelName="Jobs"
+          techs={OTHERS}
         />
       </div>
     </div>

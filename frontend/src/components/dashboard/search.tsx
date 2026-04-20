@@ -29,7 +29,7 @@ const CustomSearch = () => {
     setName(filters.name ?? '');
     setPosition(filters.position ?? '');
     setTechStacks(filters.techStacks ?? '');
-  }, []);
+  }, [filters]);
 
   return (
     <Card style={{ marginBottom: '1rem' }}>

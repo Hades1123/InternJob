@@ -3,9 +3,11 @@ import type { ApexOptions } from 'apexcharts';
 import { useCompanyQueryAll } from '@/hooks/query/companyQuery';
 import { handlePositionData } from '@/utils/helper';
 import { useMemo } from 'react';
+import { useNavigate } from 'react-router';
 
 export const PositionChart = () => {
   const { data: companyList, isError, isLoading } = useCompanyQueryAll();
+  const navigate = useNavigate();
 
   const chartData = useMemo(() => {
     if (!companyList) return { series: [], categories: [] };
@@ -25,14 +27,28 @@ export const PositionChart = () => {
   }
 
   const options: ApexOptions = {
+    chart: {
+      events: {
+        click: (_event, _chart, options) => {
+          if (options?.dataPointIndex !== undefined) {
+            const label = chartData.categories[options.dataPointIndex];
+            navigate(`/?position=${encodeURIComponent(label)}`);
+          }
+        },
+      },
+    },
     colors: [],
     plotOptions: {
       bar: {
+        distributed: true,
         horizontal: false,
         columnWidth: '55%',
         borderRadius: 5,
         borderRadiusApplication: 'end',
       },
+    },
+    legend: {
+      show: false,
     },
     dataLabels: {
       enabled: false,

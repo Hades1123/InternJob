@@ -1,4 +1,5 @@
 import { MainLayout } from '@/components/layouts/main.layout';
+import { ScrollTop } from '@/components/layouts/scroll-top';
 import { DashboardPage } from '@/pages/dashboard';
 import { StaticPage } from '@/pages/static';
 import { createBrowserRouter } from 'react-router';
@@ -6,7 +7,12 @@ import { createBrowserRouter } from 'react-router';
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <MainLayout />,
+    element: (
+      <>
+        <ScrollTop />
+        <MainLayout />
+      </>
+    ),
     children: [
       {
         index: true,
