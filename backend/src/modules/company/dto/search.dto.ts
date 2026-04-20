@@ -24,7 +24,7 @@ export class SearchCompanyDto {
 
   @IsOptional()
   @IsEnum(['updatedAt', 'createdAt'])
-  sortBy?: 'updatedAt' | 'createdAt' = 'updatedAt';
+  sortBy?: 'updatedAt' | 'createdAt' = 'createdAt';
 
   @IsOptional()
   @IsEnum(['asc', 'desc'])

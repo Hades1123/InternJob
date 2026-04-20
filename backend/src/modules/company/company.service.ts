@@ -169,7 +169,9 @@ export class CompanyService {
     const [data, total] = await Promise.all([
       this.companyModel
         .find(query)
-        .sort({ [options.sortBy ?? 'createdAt']: options.sortOrder ?? -1 })
+        .sort({
+          [options.sortBy ?? 'createdAt']: options.sortOrder ?? -1,
+        })
         .skip(skip)
         .limit(pageSize),
       this.companyModel.countDocuments(query),
