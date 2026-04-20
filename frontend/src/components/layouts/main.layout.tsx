@@ -1,37 +1,21 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Button, Layout } from 'antd';
 import { Outlet } from 'react-router';
 import { Sidebar } from './sidebar';
+import { AppHeader } from './header';
+import { AppFooter } from './footer';
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
+import { Footer, Header } from 'antd/es/layout/layout';
 
-const { Header, Footer, Sider, Content } = Layout;
-
-const headerStyle: React.CSSProperties = {
-  textAlign: 'center',
-  color: 'black',
-  height: 64,
-  paddingInline: 48,
-  lineHeight: '64px',
-  backgroundColor: 'white',
-};
+const { Sider, Content } = Layout;
 
 const contentStyle: React.CSSProperties = {
-  textAlign: 'center',
-  minHeight: '100vh',
-  lineHeight: '120px',
-  color: 'black',
-  // marginLeft: '15%',
-};
-
-const footerStyle: React.CSSProperties = {
-  textAlign: 'center',
-  color: 'black',
-  backgroundColor: 'white',
+  minHeight: 'calc(100vh - 128px)',
+  backgroundColor: '#f5f5f5',
 };
 
 const layoutStyle = {
-  borderRadius: 8,
-  overflow: 'hidden',
+  minHeight: '100vh',
 };
 
 export const MainLayout = () => {
@@ -40,29 +24,34 @@ export const MainLayout = () => {
   const toggleCollapsed = () => {
     setCollapsed(!collapsed);
   };
+
   return (
     <Layout style={layoutStyle}>
       <Sider
-        width="15%"
+        width={200}
+        collapsedWidth={80}
         collapsed={collapsed}
-        defaultCollapsed
-        style={{
-          backgroundColor: 'white',
-          // position: 'fixed',
-          // minHeight: '100vh',
-        }}
+        style={{ backgroundColor: 'white' }}
       >
-        <Button type="primary" onClick={toggleCollapsed} className="w-full">
+        <Button
+          type="primary"
+          onClick={toggleCollapsed}
+          className="w-full mt-4"
+        >
           {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
         </Button>
         <Sidebar />
       </Sider>
       <Layout>
-        <Header style={headerStyle}>Header</Header>
+        <Header style={{ backgroundColor: 'white', height: 64, padding: 0 }}>
+          <AppHeader />
+        </Header>
         <Content style={contentStyle}>
           <Outlet />
         </Content>
-        <Footer style={footerStyle}>Footer</Footer>
+        <Footer style={{ backgroundColor: 'white', padding: '16px 50px' }}>
+          <AppFooter />
+        </Footer>
       </Layout>
     </Layout>
   );
