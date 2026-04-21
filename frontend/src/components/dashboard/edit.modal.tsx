@@ -1,5 +1,7 @@
+import { updateSummaryAPI } from '@/api/company.api';
 import { useCompanyQueryId } from '@/hooks/query/companyQuery';
-import { Form, Input, Modal, Select } from 'antd';
+import { useMutation } from '@tanstack/react-query';
+import { App, Form, Input, Modal, Select } from 'antd';
 import { useEffect } from 'react';
 
 interface IProps {
@@ -15,9 +17,33 @@ export const EditModal = (props: IProps) => {
   const { open, setOpen, companyId, setCompanyId } = props;
   const [form] = Form.useForm();
   const { data, isLoading } = useCompanyQueryId(companyId);
+  const { message } = App.useApp();
+
+  const updateMutation = useMutation({
+    mutationFn: updateSummaryAPI,
+    onSuccess: (_data, _variables, _, context) => {
+      message.success('Cập nhật thành công');
+      setOpen(false);
+      context.client.invalidateQueries({ queryKey: ['company'] });
+    },
+    onError: (error) => {
+      message.error(error.message || 'Cập nhật thất bại');
+    },
+  });
 
   const handleSubmitForm = () => {
     form.submit();
+  };
+
+  const onFinish = (value: {
+    allTechStacks: string[];
+    generalNotes: string;
+  }) => {
+    updateMutation.mutate({
+      id: companyId,
+      allTechStacks: value.allTechStacks,
+      generalNotes: value.generalNotes.trim(),
+    });
   };
 
   const onCancel = () => {
@@ -43,16 +69,12 @@ export const EditModal = (props: IProps) => {
       onOk={handleSubmitForm}
       onCancel={onCancel}
       okText={'Submit'}
+      confirmLoading={updateMutation.isPending}
     >
       {isLoading ? (
         <div>Loading...</div>
       ) : (
-        <Form
-          name="basic"
-          form={form}
-          layout="vertical"
-          onFinish={(values) => console.log(values)}
-        >
+        <Form name="basic" form={form} layout="vertical" onFinish={onFinish}>
           <Form.Item<FieldType> label="TechStacks" name="allTechStacks">
             <Select mode="tags" />
           </Form.Item>

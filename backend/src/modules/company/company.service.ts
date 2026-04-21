@@ -1,4 +1,4 @@
-import { Inject, Injectable, Logger } from '@nestjs/common';
+import { Inject, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { APIResponse } from 'src/shared/types/common';
@@ -71,7 +71,7 @@ export class CompanyService {
       }
 
       this.logger.log(`[Crawler] Successfully synced ${syncedCount} companies to Database.`);
-      return { message: '[Crawler] Success', success: true };
+      return { message: '[Crawler] Success', success: true, data: null };
     } catch (error) {
       this.logger.error(`[Crawler] Sync failed: ${error}`);
       throw error;
@@ -81,7 +81,7 @@ export class CompanyService {
   async findCompanyByID(companyId: string): Promise<APIResponse<any>> {
     const company = await this.companyModel.findOne({ companyId });
     if (!company) {
-      return { message: 'Not exist', success: false };
+      return { message: 'Not exist', success: false, data: null };
     }
     return { message: 'Success', success: true, data: company };
   }
@@ -202,5 +202,31 @@ export class CompanyService {
 
   async findAllCompanies(): Promise<Company[]> {
     return await this.companyModel.find({});
+  }
+
+  async updateSummary(id: string, allTechStacks: string[], generalNotes: string): Promise<Company | null> {
+    const normalizedTechStacks = [...new Set(allTechStacks.map((item) => item.trim().toLowerCase()))];
+
+    const updatePayload: Record<string, any> = {
+      allTechStacks: normalizedTechStacks,
+      'GeminiSumary.updatedAt': new Date(),
+      'GeminiSumary.generalNotes': generalNotes.trim(),
+    };
+
+    const updated = this.companyModel.findOneAndUpdate(
+      { companyId: id },
+      {
+        $set: updatePayload,
+      },
+      {
+        returnDocument: 'after',
+      },
+    );
+
+    if (!updated) {
+      throw new NotFoundException(`Company ID: ${id} not found`);
+    }
+
+    return updated;
   }
 }

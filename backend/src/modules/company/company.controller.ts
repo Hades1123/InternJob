@@ -2,7 +2,8 @@ import { Controller, Get, Param, HttpCode, HttpStatus, Query, Post, Body } from 
 import { CompanyService } from './company.service';
 import { Company } from './schema/company.schema';
 import { SearchCompanyDto } from './dto/search.dto';
-import { APIResponse } from 'src/shared/types/common';
+import type { APIResponse } from 'src/shared/types/common';
+import { UpdateSummaryDto } from './dto/update-summary.dto';
 
 @Controller('companies')
 export class CompanyController {
@@ -73,5 +74,16 @@ export class CompanyController {
   async likedCompany(@Body() body: { id: string; liked: boolean }) {
     const { liked, id } = body;
     return this.companyService.likeCompany(id, liked);
+  }
+
+  @Post('summary')
+  async updateSummary(@Body() body: UpdateSummaryDto): Promise<APIResponse<Company>> {
+    const { allTechStacks, generalNotes, id } = body;
+    const data = await this.companyService.updateSummary(id, allTechStacks, generalNotes);
+    return {
+      message: 'Update successfully',
+      success: true,
+      data,
+    };
   }
 }

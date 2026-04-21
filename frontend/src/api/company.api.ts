@@ -35,3 +35,12 @@ export const likeCompany = async (id: string, liked: boolean) => {
   });
   return result.data;
 };
+
+export const updateSummaryAPI = async (payload: {
+  id: string;
+  allTechStacks: string[];
+  generalNotes: string;
+}) => {
+  const result = await axios.post(`companies/summary`, payload);
+  return result.data;
+};

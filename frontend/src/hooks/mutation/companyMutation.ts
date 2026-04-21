@@ -92,6 +92,7 @@ export const useCompanyMutation = (filters: ICompanyParams) => {
       context.client.invalidateQueries({ queryKey: ['company', filters] });
     },
   });
+
   return {
     handleCheckCompany,
     handleLikeCompany,
