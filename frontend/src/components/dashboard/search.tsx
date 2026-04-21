@@ -1,7 +1,8 @@
 import { useCompanyQuery } from '@/hooks/query/companyQuery';
 import { useFilters } from '@/hooks/useFilters';
-import { Button, Card, Col, Input, Row, Typography } from 'antd';
-import { useEffect, useState } from 'react';
+import { AutoComplete, Button, Card, Col, Input, Row, Typography } from 'antd';
+import { useEffect, useMemo, useState } from 'react';
+import { ALL_TECH_STACKS } from '@/constants/techStacks';
 
 const CustomSearch = () => {
   const { filters, setFilters, resetFilters } = useFilters();
@@ -10,12 +11,18 @@ const CustomSearch = () => {
   const [position, setPosition] = useState<string>('');
   const [techStacks, setTechStacks] = useState<string>('');
 
+  const techStackOptions = useMemo(() => {
+    return ALL_TECH_STACKS.map((tech) => ({
+      value: tech.charAt(0).toUpperCase() + tech.slice(1),
+    }));
+  }, []);
+
   const onSearch = () => {
     setFilters({
       page: 1,
-      techStacks,
-      name,
-      position,
+      techStacks: techStacks.trim(),
+      name: name.trim(),
+      position: position.trim(),
     });
   };
 
@@ -64,13 +71,18 @@ const CustomSearch = () => {
           <Typography.Title level={5} style={{ textAlign: 'start' }}>
             Công nghệ
           </Typography.Title>
-          <Input
-            placeholder="Nhập tên công nghệ mà bạn muốn tìm. Ví dụ: react,javascript,..."
+          <AutoComplete
+            options={techStackOptions}
+            placeholder="Nhập tên công nghệ. Ví dụ: react, vue.js, ..."
             allowClear
             size="large"
-            style={{ marginBottom: 10 }}
-            onChange={(event) => setTechStacks(event.target.value)}
+            style={{ marginBottom: 10, width: '100%' }}
             value={techStacks}
+            onChange={(value) => setTechStacks(value)}
+            showSearch={{
+              filterOption: (inputValue, option) =>
+                option!.value.toLowerCase().includes(inputValue.toLowerCase()),
+            }}
           />
         </Col>
       </Row>

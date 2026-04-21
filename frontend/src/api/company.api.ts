@@ -13,6 +13,13 @@ export const getAllCompaniesWithoutFilters = async () => {
   return result.data;
 };
 
+export const getCompanyId = async (companyId: string) => {
+  const result = await axios.get<APIResponse<ICompany>>(
+    `/companies/${companyId}`
+  );
+  return result.data;
+};
+
 export const checkCompany = async (id: string, checked: boolean) => {
   const result = await axios.post<APIResponse<ICompany>>('/companies/checked', {
     id,

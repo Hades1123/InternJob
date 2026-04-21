@@ -32,3 +32,12 @@ export const OTHERS =
     .toLowerCase()
     .split(',')
     .map((str) => str.trim());
+
+export const ALL_TECH_STACKS = [
+  ...FRONTEND,
+  ...BACKEND,
+  ...PROGRAMING_LANGUAGE,
+  ...MOBILE,
+  ...DB_CLOUD,
+  ...OTHERS,
+];

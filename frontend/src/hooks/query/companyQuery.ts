@@ -1,6 +1,7 @@
 import {
   getAllCompanies,
   getAllCompaniesWithoutFilters,
+  getCompanyId,
 } from '@/api/company.api';
 import type { ICompanyParams } from '@/types/filter';
 import { useQuery } from '@tanstack/react-query';
@@ -20,6 +21,17 @@ export const useCompanyQueryAll = () => {
     queryKey: ['company'],
     queryFn: async () => {
       const result = await getAllCompaniesWithoutFilters();
+      return result.data;
+    },
+  });
+};
+
+export const useCompanyQueryId = (companyId: string) => {
+  return useQuery({
+    queryKey: ['company', companyId],
+    enabled: !!companyId,
+    queryFn: async () => {
+      const result = await getCompanyId(companyId);
       return result.data;
     },
   });
