@@ -1,8 +1,8 @@
 import { Injectable, Logger, OnApplicationBootstrap } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
-import { CompanyService } from 'src/modules/company/company.service';
-import { CrawlerService } from 'src/modules/crawler/crawler.service';
-import { CRON_EVERY_20_MINUTES } from 'src/shared/constants/constant';
+import { CompanyService } from '@/modules/company/company.service';
+import { CrawlerService } from '@/modules/crawler/crawler.service';
+import { CRON_EVERY_20_MINUTES } from '@/shared/constants/constant';
 
 @Injectable()
 export class ScheduleService implements OnApplicationBootstrap {
@@ -16,13 +16,13 @@ export class ScheduleService implements OnApplicationBootstrap {
 
   async onApplicationBootstrap() {
     this.logger.log('Server started — running initial sync...');
-    await this.runFullPipeline();
+    // await this.runFullPipeline();
   }
 
   @Cron(CRON_EVERY_20_MINUTES)
   async handleCron() {
     this.logger.log('Cron job triggered (every 20 minutes)');
-    await this.runFullPipeline();
+    // await this.runFullPipeline();
   }
 
   /**

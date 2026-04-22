@@ -1,7 +1,7 @@
 import { createPartFromUri, GoogleGenAI, Part } from '@google/genai';
 import { Inject, Injectable, Logger } from '@nestjs/common';
-import { DEFAULT_MODEL, PROMPT, UNKNOWN } from 'src/shared/constants/constant';
-import environmentConfig from 'src/config/env.config';
+import { DEFAULT_MODEL, PROMPT, UNKNOWN } from '@/shared/constants/constant';
+import environmentConfig from '@/config/env.config';
 import * as mammoth from 'mammoth';
 import { type ConfigType } from '@nestjs/config';
 

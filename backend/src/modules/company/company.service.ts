@@ -1,12 +1,12 @@
 import { Inject, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { APIResponse } from 'src/shared/types/common';
+import { APIResponse } from '@/shared/types/common';
 import { Company } from './schema/company.schema';
 import axios from 'axios';
-import { JobAPIRes } from 'src/shared/types/company';
-import { UNKNOWN } from 'src/shared/constants/constant';
-import environmentConfig from 'src/config/env.config';
+import { JobAPIRes } from '@/shared/types/company';
+import { UNKNOWN } from '@/shared/constants/constant';
+import environmentConfig from '@/config/env.config';
 import type { ConfigType } from '@nestjs/config';
 
 @Injectable()

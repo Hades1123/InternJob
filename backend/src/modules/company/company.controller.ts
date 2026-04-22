@@ -2,7 +2,7 @@ import { Controller, Get, Param, HttpCode, HttpStatus, Query, Post, Body } from 
 import { CompanyService } from './company.service';
 import { Company } from './schema/company.schema';
 import { SearchCompanyDto } from './dto/search.dto';
-import type { APIResponse } from 'src/shared/types/common';
+import type { APIResponse } from '@/shared/types/common';
 import { UpdateSummaryDto } from './dto/update-summary.dto';
 
 @Controller('companies')

@@ -2,6 +2,7 @@ import { plainToInstance } from 'class-transformer';
 import { IsNumber, IsString, validateSync } from 'class-validator';
 
 class EnvironmentVariables {
+  // App
   @IsNumber()
   PORT: number;
 
@@ -14,12 +15,14 @@ class EnvironmentVariables {
   @IsString()
   BASE_URL: string;
 
+  // API key
   @IsString()
   GEMINI_MODEL: string;
 
   @IsString()
   GEMINI_KEY: string;
 
+  // Database
   @IsString()
   MONGO_USERNAME: string;
 
@@ -31,6 +34,16 @@ class EnvironmentVariables {
 
   @IsString()
   MONGO_DB_URL: string;
+
+  // GOOGLE_AUTH
+  @IsString()
+  GOOGLE_AUTH_CLIENT_ID: string;
+
+  @IsString()
+  GOOGLE_AUTH_CLIENT_SECRET: string;
+
+  @IsString()
+  GOOGLE_AUTH_CALLBACK_URL: string;
 }
 
 export function validate(config: Record<string, unknown>) {
