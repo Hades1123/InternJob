@@ -115,7 +115,7 @@ export const TableData = () => {
       },
     },
     {
-      title: 'Đã xem',
+      title: 'Đã nộp',
       dataIndex: 'checked',
       key: 'checked',
       width: 50,
