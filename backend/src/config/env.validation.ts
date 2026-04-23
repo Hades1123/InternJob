@@ -1,49 +1,61 @@
+import { IsStringValue } from '@/common/decorators/IsStringValue';
 import { plainToInstance } from 'class-transformer';
-import { IsNumber, IsString, validateSync } from 'class-validator';
+import { IsNotEmpty, IsNumber, Min, validateSync } from 'class-validator';
+import { type StringValue } from 'ms';
 
 class EnvironmentVariables {
   // App
-  @IsNumber()
+  @Min(1)
   PORT: number;
 
-  @IsString()
+  @IsNotEmpty()
   COMPANY_URL: string;
 
-  @IsString()
+  @IsNotEmpty()
   JOB_URL: string;
 
-  @IsString()
+  @IsNotEmpty()
   BASE_URL: string;
 
   // API key
-  @IsString()
+  @IsNotEmpty()
   GEMINI_MODEL: string;
 
-  @IsString()
+  @IsNotEmpty()
   GEMINI_KEY: string;
 
   // Database
-  @IsString()
+  @IsNotEmpty()
   MONGO_USERNAME: string;
 
-  @IsString()
+  @IsNotEmpty()
   MONGO_PASSWORD: string;
 
-  @IsString()
+  @IsNotEmpty()
   MONGO_DB_NAME: string;
 
-  @IsString()
+  @IsNotEmpty()
   MONGO_DB_URL: string;
 
   // GOOGLE_AUTH
-  @IsString()
+  @IsNotEmpty()
   GOOGLE_AUTH_CLIENT_ID: string;
 
-  @IsString()
+  @IsNotEmpty()
   GOOGLE_AUTH_CLIENT_SECRET: string;
 
-  @IsString()
+  @IsNotEmpty()
   GOOGLE_AUTH_CALLBACK_URL: string;
+
+  // JWT
+  @IsNotEmpty()
+  JWT_ACCESS_TOKEN_SECRET: string;
+
+  @IsNotEmpty()
+  @IsStringValue('JWT_ACCESS_TOKEN_EXPIRES', {
+    message: 'JWT_ACCESS_TOKEN_EXPIRES must be a valid time string (e.g., "1d", "2h", "30m")',
+  })
+  JWT_ACCESS_TOKEN_EXPIRES: StringValue;
 }
 
 export function validate(config: Record<string, unknown>) {
@@ -51,7 +63,13 @@ export function validate(config: Record<string, unknown>) {
   const errors = validateSync(validatedConfig, { skipMissingProperties: false });
 
   if (errors.length > 0) {
-    throw new Error(errors.toString());
+    const messages = errors
+      .map((error) => {
+        const constraint = error.constraints ? Object.values(error.constraints).join(', ') : '';
+        return `${constraint}`;
+      })
+      .join('\n');
+    throw new Error(`Environment validation failed:\n${messages}`);
   }
   return validatedConfig;
 }
