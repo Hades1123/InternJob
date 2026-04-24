@@ -1,8 +1,8 @@
 import { Controller, Get, Param, HttpCode, HttpStatus, Query, Post, Body } from '@nestjs/common';
 import { CompanyService } from './company.service';
-import { Company } from './schema/company.schema';
+import { Company } from './schemas/company.schema';
 import { SearchCompanyDto } from './dto/search.dto';
-import type { APIResponse } from '@/shared/types/common';
+import type { APIResponse } from '@/common/interfaces';
 import { UpdateSummaryDto } from './dto/update-summary.dto';
 import { IsPublic } from '@/common/decorators/IsPublic.decorator';
 
@@ -85,7 +85,7 @@ export class CompanyController {
     return {
       message: 'Update successfully',
       success: true,
-      data,
+      data: data ?? undefined,
     };
   }
 }

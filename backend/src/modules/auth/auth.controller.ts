@@ -1,9 +1,9 @@
 import { Controller, Get, Inject, Req, Res, UnauthorizedException, UseGuards } from '@nestjs/common';
 import { GoogleAuthGuard } from './guards/google-auth.guard';
 import { AuthService } from './auth.service';
-import { type AuthRequest } from '@/common/types/auth-req.interface';
+import { type AuthRequest } from './interfaces';
 import { type Response } from 'express';
-import envConfig from '@/config/env.config';
+import { envConfig } from '@/config';
 import { type ConfigType } from '@nestjs/config';
 import { IsPublic } from '@/common/decorators/IsPublic.decorator';
 

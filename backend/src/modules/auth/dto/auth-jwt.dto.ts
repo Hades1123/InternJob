@@ -1,4 +1,4 @@
-import { UserRole } from '@/shared/constants/constant';
+import { UserRole } from '@/common/constants';
 
 export type AuthJwtPayload = {
   googleId: string;

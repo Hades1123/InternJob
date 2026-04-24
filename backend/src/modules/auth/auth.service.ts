@@ -1,12 +1,11 @@
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { CreateUserDto } from '@/modules/user/dto/create-user.dto';
 import { UserService } from '@/modules/user/user.service';
-import { AuthJwtPayload, TokensResponse } from './types/auth.jwt.type';
-import * as argon2 from 'argon2';
+import { AuthJwtPayload, TokensResponse } from './dto/auth-jwt.dto';
+import { HashUtil } from '@/utils';
 import { JwtService } from '@nestjs/jwt';
-import accessJwtConfig from '@/config/access-jwt.config';
+import { accessJwtConfig, refreshJwtConfig } from '@/config';
 import { type ConfigType } from '@nestjs/config';
-import refreshJwtConfig from '@/config/refresh-jwt.config';
 
 @Injectable()
 export class AuthService {
@@ -21,7 +20,7 @@ export class AuthService {
 
   async login(payload: AuthJwtPayload): Promise<TokensResponse> {
     const { accessToken, refreshToken } = await this.generateTokens(payload);
-    const hashedRefreshToken = await argon2.hash(refreshToken);
+    const hashedRefreshToken = await HashUtil.hash(refreshToken);
     await this.userService.updateRefreshToken(payload.googleId, hashedRefreshToken);
     return {
       accessToken,

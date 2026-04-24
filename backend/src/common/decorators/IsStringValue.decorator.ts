@@ -2,7 +2,7 @@ import { registerDecorator, ValidationOptions, ValidationArguments } from 'class
 import ms from 'ms';
 
 export function IsStringValue(property: string, validationOptions?: ValidationOptions) {
-  return function (object: Object, propertyName: string) {
+  return function (object: object, propertyName: string) {
     registerDecorator({
       name: 'IsStringValue',
       target: object.constructor,

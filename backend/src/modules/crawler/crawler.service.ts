@@ -1,7 +1,7 @@
 import { createPartFromUri, GoogleGenAI, Part } from '@google/genai';
 import { Inject, Injectable, Logger } from '@nestjs/common';
-import { DEFAULT_MODEL, PROMPT, UNKNOWN } from '@/shared/constants/constant';
-import environmentConfig from '@/config/env.config';
+import { DEFAULT_MODEL, PROMPT, UNKNOWN } from '@/common/constants';
+import { envConfig } from '@/config';
 import * as mammoth from 'mammoth';
 import { type ConfigType } from '@nestjs/config';
 
@@ -19,7 +19,7 @@ export class CrawlerService {
 
   constructor(
     @Inject('GEMINI_AI') private readonly ai: GoogleGenAI,
-    @Inject(environmentConfig.KEY) private envConfig: ConfigType<typeof environmentConfig>,
+    @Inject(envConfig.KEY) private config: ConfigType<typeof envConfig>,
   ) {}
 
   /**
@@ -109,7 +109,7 @@ export class CrawlerService {
     });
 
     const result = await this.generateContentWithRetry({
-      model: this.envConfig.geminiModel ?? DEFAULT_MODEL,
+      model: this.config.geminiModel ?? DEFAULT_MODEL,
       contents: content,
     });
 
@@ -144,7 +144,7 @@ export class CrawlerService {
     }
 
     const geminiResponse = await this.generateContentWithRetry({
-      model: this.envConfig.geminiModel ?? DEFAULT_MODEL,
+      model: this.config.geminiModel ?? DEFAULT_MODEL,
       contents: `${PROMPT}\n\nNội dung tài liệu:\n${validTexts}`,
     });
 
@@ -155,7 +155,7 @@ export class CrawlerService {
    * Pipeline chính: xử lý tất cả file của 1 công ty (ưu tiên PDF, fallback DOCX)
    */
   async processCompanyFiles(files: { name: string; path: string; fileType: string }[]): Promise<GeminiSumary> {
-    const baseUrl = this.envConfig.baseUrl;
+    const baseUrl = this.config.baseUrl;
 
     const pdfFiles = files.filter((f) => f.fileType === 'pdf').map((f) => baseUrl.concat(f.path));
 

@@ -1,9 +1,9 @@
-import accessJwtConfig from '@/config/access-jwt.config';
+import { accessJwtConfig } from '@/config';
 import { Inject } from '@nestjs/common';
 import { type ConfigType } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy, ExtractJwt } from 'passport-jwt';
-import { AuthJwtPayload } from '@/modules/auth/types/auth.jwt.type';
+import { AuthJwtPayload } from '@/modules/auth/dto/auth-jwt.dto';
 import { AuthService } from '@/modules/auth/auth.service';
 import { Request } from 'express';
 

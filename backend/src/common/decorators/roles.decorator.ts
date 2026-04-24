@@ -1,4 +1,4 @@
-import { UserRole } from '@/shared/constants/constant';
+import { UserRole } from '@/common/constants';
 import { SetMetadata } from '@nestjs/common';
 
 export const ROLE_KEYS = Symbol('ROLE_KEYS');

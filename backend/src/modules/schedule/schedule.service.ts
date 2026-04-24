@@ -2,7 +2,7 @@ import { Injectable, Logger, OnApplicationBootstrap } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
 import { CompanyService } from '@/modules/company/company.service';
 import { CrawlerService } from '@/modules/crawler/crawler.service';
-import { CRON_EVERY_20_MINUTES } from '@/shared/constants/constant';
+import { CRON_EVERY_20_MINUTES } from '@/common/constants';
 
 @Injectable()
 export class ScheduleService implements OnApplicationBootstrap {

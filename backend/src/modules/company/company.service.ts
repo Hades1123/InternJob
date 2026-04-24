@@ -1,31 +1,31 @@
 import { Inject, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { APIResponse } from '@/shared/types/common';
-import { Company } from './schema/company.schema';
+import { APIResponse } from '@/common/interfaces';
+import { JobAPIRes } from './interfaces';
+import { Company } from './schemas/company.schema';
 import axios from 'axios';
-import { JobAPIRes } from '@/shared/types/company';
-import { UNKNOWN } from '@/shared/constants/constant';
-import environmentConfig from '@/config/env.config';
+import { UNKNOWN } from '@/common/constants';
+import { envConfig } from '@/config';
 import type { ConfigType } from '@nestjs/config';
 
 @Injectable()
 export class CompanyService {
   constructor(
     @InjectModel(Company.name) private companyModel: Model<Company>,
-    @Inject(environmentConfig.KEY) private envConfig: ConfigType<typeof environmentConfig>,
+    @Inject(envConfig.KEY) private config: ConfigType<typeof envConfig>,
   ) {}
   private readonly logger = new Logger(CompanyService.name);
 
   async syncCompaniesFromApi(): Promise<APIResponse<any>> {
     try {
       this.logger.log('Fetching companies from API...');
-      const response = await axios.get(this.envConfig.companyUrl);
+      const response = await axios.get(this.config.companyUrl);
       const companies = response.data.items;
       let syncedCount = 0;
 
       for (const item of companies) {
-        const currentJobDetailResponse = await axios.get<JobAPIRes>(this.envConfig.jobUrl.concat(item._id));
+        const currentJobDetailResponse = await axios.get<JobAPIRes>(this.config.jobUrl.concat(item._id));
         const currentJobDetail = currentJobDetailResponse.data;
 
         const formatInternFile = currentJobDetail.item.internshipFiles.map((e) => ({

@@ -1,4 +1,4 @@
-import { UserRole } from '@/shared/constants/constant';
+import { UserRole } from '@/common/constants';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
