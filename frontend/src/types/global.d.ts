@@ -8,6 +8,16 @@ interface APIResponse<T> {
   total?: number;
 }
 
+interface IUser {
+  googleId: string;
+  email: string;
+  name: string;
+  avatarURL: string;
+  role: 'admin' | 'user';
+  checkedCompanies: string[];
+  rejectedCompanies: string[];
+}
+
 interface ICompany {
   _id: string;
   companyId: string;

@@ -1,5 +1,6 @@
-import { type TRole } from '@/shared/constants/constant';
+import { UserRole } from '@/shared/constants/constant';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Document } from 'mongoose';
 
 @Schema({ timestamps: true })
 export class User extends Document {
@@ -15,8 +16,8 @@ export class User extends Document {
   @Prop()
   avatarURL: string;
 
-  @Prop({ enum: ['user', 'admin'], default: 'user' })
-  role: TRole;
+  @Prop({ enum: UserRole, default: UserRole.USER })
+  role: UserRole;
 
   @Prop()
   hashedRefreshToken: string;
@@ -25,7 +26,7 @@ export class User extends Document {
   checkedCompanies: string[];
 
   @Prop({ type: [String], default: [] })
-  likedCompanies: string[];
+  rejectedCompanies: string[];
 
   @Prop({ default: Date.now })
   createdAt: Date;

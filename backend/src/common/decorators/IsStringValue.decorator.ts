@@ -14,7 +14,6 @@ export function IsStringValue(property: string, validationOptions?: ValidationOp
           return ms(value) != undefined;
         },
         defaultMessage(args: ValidationArguments) {
-          console.log('hello');
           return `${args.property} must be a valid time string (e.g., "1d", "2h", "30m")`;
         },
       },

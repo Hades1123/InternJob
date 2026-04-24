@@ -1,7 +1,10 @@
 export const DEFAULT_PORT = 8000;
 export const UNKNOWN = 'Unknown';
 export const DEFAULT_MODEL = 'gemini-2.5-flash-lite';
-export type TRole = 'admin' | 'user';
+export enum UserRole {
+  ADMIN = 'admin',
+  USER = 'user',
+}
 
 // Cron expression: chạy mỗi 20 phút
 export const CRON_EVERY_20_MINUTES = '*/20 * * * *';

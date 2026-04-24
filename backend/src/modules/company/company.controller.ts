@@ -4,7 +4,9 @@ import { Company } from './schema/company.schema';
 import { SearchCompanyDto } from './dto/search.dto';
 import type { APIResponse } from '@/shared/types/common';
 import { UpdateSummaryDto } from './dto/update-summary.dto';
+import { IsPublic } from '@/common/decorators/IsPublic.decorator';
 
+@IsPublic()
 @Controller('companies')
 export class CompanyController {
   constructor(private readonly companyService: CompanyService) {}

@@ -1,12 +1,15 @@
-import { IsStringValue } from '@/common/decorators/IsStringValue';
+import { IsStringValue } from '@/common/decorators/IsStringValue.decorator';
 import { plainToInstance } from 'class-transformer';
-import { IsNotEmpty, IsNumber, Min, validateSync } from 'class-validator';
+import { IsNotEmpty, Min, validateSync } from 'class-validator';
 import { type StringValue } from 'ms';
 
 class EnvironmentVariables {
   // App
   @Min(1)
   PORT: number;
+
+  @IsNotEmpty()
+  FRONTEND_URL: string;
 
   @IsNotEmpty()
   COMPANY_URL: string;
@@ -56,6 +59,15 @@ class EnvironmentVariables {
     message: 'JWT_ACCESS_TOKEN_EXPIRES must be a valid time string (e.g., "1d", "2h", "30m")',
   })
   JWT_ACCESS_TOKEN_EXPIRES: StringValue;
+
+  @IsNotEmpty()
+  JWT_REFRESH_TOKEN_SECRET: string;
+
+  @IsNotEmpty()
+  @IsStringValue('JWT_REFRESH_TOKEN_EXPIRES', {
+    message: 'JWT_REFRESH_TOKEN_EXPIRES must be a valid time string',
+  })
+  JWT_REFRESH_TOKEN_EXPIRES: StringValue;
 }
 
 export function validate(config: Record<string, unknown>) {
