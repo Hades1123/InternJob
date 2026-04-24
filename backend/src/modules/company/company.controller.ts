@@ -24,9 +24,7 @@ export class CompanyController {
 
   @Get(':companyId')
   @HttpCode(HttpStatus.OK)
-  async getCompanyById(
-    @Param('companyId') companyId: string,
-  ): Promise<{ success: boolean; data?: Company; message?: string }> {
+  async getCompanyById(@Param('companyId') companyId: string): Promise<APIResponse<Company>> {
     const result = await this.companyService.findCompanyByID(companyId);
     if (!result.success) {
       return {
@@ -41,7 +39,7 @@ export class CompanyController {
   }
 
   @Get()
-  async getAllCompanies(@Query() query: SearchCompanyDto) {
+  async getAllCompanies(@Query() query: SearchCompanyDto): Promise<APIResponse<Company[]>> {
     const { address, name, techStacks, techMode, sortBy, sortOrder, page, pageSize, checked, liked, position } = query;
     const result = await this.companyService.searchCompanies({
       address,
