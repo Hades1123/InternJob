@@ -40,7 +40,20 @@ export class CompanyController {
 
   @Get()
   async getAllCompanies(@Query() query: SearchCompanyDto): Promise<APIResponse<Company[]>> {
-    const { address, name, techStacks, techMode, sortBy, sortOrder, page, pageSize, checked, liked, position } = query;
+    const {
+      address,
+      name,
+      techStacks,
+      techMode,
+      sortBy,
+      sortOrder,
+      page,
+      pageSize,
+      checked,
+      liked,
+      position,
+      quantity,
+    } = query;
     const result = await this.companyService.searchCompanies({
       address,
       name,
@@ -53,6 +66,7 @@ export class CompanyController {
       checked,
       liked,
       position,
+      quantity,
     });
 
     return {

@@ -8,6 +8,7 @@ import axios from 'axios';
 import { UNKNOWN } from '@/common/constants';
 import { envConfig } from '@/config';
 import type { ConfigType } from '@nestjs/config';
+import { QuantityFilter } from './dto/search.dto';
 
 @Injectable()
 export class CompanyService {
@@ -131,6 +132,7 @@ export class CompanyService {
     page?: number;
     pageSize?: number;
     position?: string;
+    quantity?: QuantityFilter;
   }): Promise<{ data: Company[]; total: number; page: number; pageSize: number }> {
     const query: any = {};
 
@@ -160,6 +162,17 @@ export class CompanyService {
 
     if (options.liked) {
       query.liked = options.liked == 'true' ? { $eq: true } : { $eq: false };
+    }
+
+    if (options.quantity) {
+      query.$expr =
+        options.quantity === QuantityFilter.FULL
+          ? {
+              $eq: ['$stat.studentAccepted', '$stat.maxAcceptedStudent'],
+            }
+          : {
+              $ne: ['$stat.studentAccepted', '$stat.maxAcceptedStudent'],
+            };
     }
 
     const page = options.page || 1;

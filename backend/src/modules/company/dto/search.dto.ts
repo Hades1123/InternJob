@@ -1,6 +1,11 @@
 import { Type } from 'class-transformer';
 import { IsEnum, IsInt, IsOptional, IsString, Min } from 'class-validator';
 
+export enum QuantityFilter {
+  FULL = 'full',
+  INSUFFICIENT = 'insufficient',
+}
+
 export class SearchCompanyDto {
   @IsOptional()
   @IsString()
@@ -49,4 +54,8 @@ export class SearchCompanyDto {
   @IsOptional()
   @IsEnum(['true', 'false'])
   liked: string;
-}
+
+  @IsOptional()
+  @IsEnum(QuantityFilter)
+  quantity?: QuantityFilter;
+  }
