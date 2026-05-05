@@ -8,8 +8,8 @@ export const handlePositionData = (data: ICompany[]) => {
       );
     });
   });
-
-  return positionMap;
+  const result = new Map([...positionMap].sort((a, b) => b[1] - a[1]));
+  return result;
 };
 
 export const handleTechStack = (data: ICompany[], techs: string[]) => {

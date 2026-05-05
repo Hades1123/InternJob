@@ -12,11 +12,11 @@ export class ScheduleService implements OnApplicationBootstrap {
   constructor(
     private readonly companyService: CompanyService,
     private readonly crawlerService: CrawlerService,
-  ) {}
+  ) { }
 
   async onApplicationBootstrap() {
     this.logger.log('Server started — running initial sync...');
-    // await this.runFullPipeline();
+    await this.runFullPipeline();
   }
 
   @Cron(CRON_EVERY_20_MINUTES)

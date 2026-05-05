@@ -10,7 +10,7 @@ This project was built to address the usability issues of my university's offici
 
 InternJob solves these problems by providing a stable, searchable dashboard with personal tracking features, plus AI-powered extraction of job details from PDF/DOCX files.
 
-The original link for my university's official internship recruitment portal: https://internship.cse.hcmut.edu.vn/
+The original link for my university's official internship recruitment portal: <https://internship.cse.hcmut.edu.vn/>
 
 ---
 
@@ -20,12 +20,8 @@ A full-stack web application that uses **Google Gemini AI** to automatically ext
 
 ## Tech Stack
 
-| Frontend                  | Backend             |
-| ------------------------- | ------------------- |
-| React 19 + TypeScript     | NestJS + TypeScript |
-| Vite                      | MongoDB + Mongoose  |
-| Ant Design + Tailwind CSS | Google Gemini AI    |
-| TanStack Query v5         | PDF/DOCX Processing |
+| S | Google Gemini AI |
+| TanStack Query v5 | POCX Processing |
 
 ## Key Features
 

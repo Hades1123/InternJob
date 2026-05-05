@@ -1,11 +1,11 @@
 export const FRONTEND =
-  'React, Vue.js, Angular, Next.js, Nuxt.js, Tailwind CSS, Bootstrap'
+  'React, Vue.js, Angular, Next.js, Nuxt.js, Svelte, Astro, jQuery'
     .toLowerCase()
     .split(',')
     .map((str) => str.trim());
 
 export const BACKEND =
-  'Node.js, NestJS, Express, Spring Boot, ASP.NET, Django, Flask, Prisma, FastAPI, Laravel'
+  'Node.js, NestJS, Express.js, Spring Boot, ASP.NET, Django, Flask, FastAPI, Laravel'
     .toLowerCase()
     .split(',')
     .map((str) => str.trim());
