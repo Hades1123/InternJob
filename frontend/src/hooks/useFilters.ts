@@ -11,6 +11,7 @@ export const useFilters = () => {
     position: searchParams.get('position') || undefined,
     checked: searchParams.get('checked') || undefined,
     liked: searchParams.get('liked') || undefined,
+    quantity: searchParams.get('quantity') || undefined,
   };
 
   const setFilter = <K extends keyof ICompanyParams>(

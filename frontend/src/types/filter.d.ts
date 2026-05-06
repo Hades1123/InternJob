@@ -6,4 +6,5 @@ export interface ICompanyParams {
   position?: string;
   checked?: string;
   liked?: string;
+  quantity?: string;
 }
