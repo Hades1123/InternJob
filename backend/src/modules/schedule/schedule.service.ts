@@ -12,7 +12,7 @@ export class ScheduleService implements OnApplicationBootstrap {
   constructor(
     private readonly companyService: CompanyService,
     private readonly crawlerService: CrawlerService,
-  ) { }
+  ) {}
 
   async onApplicationBootstrap() {
     this.logger.log('Server started — running initial sync...');

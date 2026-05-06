@@ -1,4 +1,4 @@
-import { Type } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 import { IsEnum, IsInt, IsOptional, IsString, Min } from 'class-validator';
 
 export enum QuantityFilter {
@@ -19,6 +19,7 @@ export class SearchCompanyDto {
   @IsString()
   techStacks?: string;
 
+  @Transform(({ value }) => (value ? String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&') : value))
   @IsOptional()
   @IsString()
   position?: string;
@@ -58,4 +59,4 @@ export class SearchCompanyDto {
   @IsOptional()
   @IsEnum(QuantityFilter)
   quantity?: QuantityFilter;
-  }
+}
